@@ -39,7 +39,6 @@ class DataManager {
     
     func getStudent() -> [Student] {
         var student = [Student]()
-        
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Student")
         do {
             student = try context.fetch(fetchRequest) as! [Student]
@@ -50,7 +49,7 @@ class DataManager {
     }
     
     func deleteStudent(index:Int) -> [Student] {
-        var student = [Student]()
+        var student = getStudent()
         context.delete(student[index])
         student.remove(at: index)
         do {
@@ -59,5 +58,18 @@ class DataManager {
             print("Do not Delete form data")
         }
         return student
+    }
+    
+    func editStudent(object: [String:String], index: Int) {
+        let student = getStudent()
+        student[index].name = object["name"]
+        student[index].department = object["department"]
+        student[index].collage = object["collage"]
+        student[index].number = object["number"]
+        do {
+            try context.save()
+        } catch  {
+            print("Do not Edit form data")
+        }
     }
 }
